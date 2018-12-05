@@ -122,7 +122,14 @@ result2 = model.predict(x_pre)
 DF(result2).to_csv('result2.csv', index_label='Id', header=['time'])
 
 # ================= Average ensemble ===================
-
 ave_result = (result1 + result2)/2
-DF(ave_result).to_csv('result.csv', index_label='Id', header=['time'])
+
+# 确保预测值都＞0
+l = list(ave_result)
+for i in range(len(ave_result)):
+    if l[i] < 0:
+        l[i] = 0 
+result = np.array(l)
+
+DF(result).to_csv('result.csv', index_label='Id', header=['time'])
 
