@@ -42,6 +42,9 @@ X.drop('n_jobs',axis = 1,inplace=True)
 X_1 = X[['n_classes', 'penalty_elasticnet', 'penalty_l1',
        'penalty_l2', 'penalty_none', 'C', 'D']]
 
+
+# ====================== xgboost预测 ========================
+
 import xgboost as xgb
 from sklearn.model_selection import GridSearchCV
 
@@ -60,16 +63,11 @@ def xgb_grid_search(X,y,cv_params,other_params):
 # xgb_grid_search(X_1,y,cv_params,other_params)
 
 # cv_params = {'max_depth': [3, 4, 5, 6], 'min_child_weight': [1, 2, 3, 4]}
-# other_params = {'learning_rate': 0.1, 'n_estimators': 800, 'max_depth': 5, 'min_child_weight': 1, 'seed': 0,
+# other_params = {'learning_rate': 0.1, 'n_estimators': 1000, 'max_depth': 5, 'min_child_weight': 1, 'seed': 0,
 #                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 0, 'reg_lambda': 1}
 # xgb_grid_search(X_1,y,cv_params,other_params)
 
-
-# ====================== xgboost预测 ========================
-import xgboost as xgb
-from sklearn.model_selection import GridSearchCV
-
-
+# xgboost超参数
 params = {'learning_rate': 0.1, 'n_estimators': 1000, 'max_depth': 5, 'min_child_weight': 2, 'seed': 0,
                     'subsample': 0.8, 'colsample_bytree': 0.8, 'gamma': 0, 'reg_alpha': 6, 'reg_lambda': 3}
 
@@ -119,12 +117,12 @@ x_test = pd.get_dummies(x_test)
 x_test['n_jobs'].replace(-1,16,inplace=True)
 x_test['C'] = x_test.apply(lambda row: row['max_iter'] * row['n_samples']*row['n_features'], axis=1)
 x_test['D'] = x_test.apply(lambda row: np.square(row['n_jobs']),axis=1)
-x_test.drop('n_jobs',axis = 1,inplace=True)
 x_pre = x_test[['n_classes','penalty_elasticnet', 'penalty_l1', 'penalty_l2','penalty_none', 'C', 'D']]
 result2 = model.predict(x_pre)
 DF(result2).to_csv('result2.csv', index_label='Id', header=['time'])
 
 # ================= Average ensemble ===================
-from pandas import DataFrame as DF
+
 ave_result = (result1 + result2)/2
 DF(ave_result).to_csv('result.csv', index_label='Id', header=['time'])
+
