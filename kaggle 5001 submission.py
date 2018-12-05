@@ -11,7 +11,7 @@ from sklearn.model_selection import GridSearchCV
 import feature_selector
 import pandas as pd
 
-df = pd.read_csv('C:/Users/jiang/Downloads/train.csv',index_col = 'id')
+df = pd.read_csv('train.csv',index_col = 'id')
 
 df = pd.get_dummies(df)
 
@@ -80,7 +80,7 @@ model.fit(X_1,y)
 # cv_error = cross_val_score(model,X_1,y,cv=30,scoring='neg_mean_squared_error').mean()
 # print(cv_error)
 
-x_test = pd.read_csv('C:/Users/jiang/Downloads/test.csv',index_col = 'id')
+x_test = pd.read_csv('test.csv',index_col = 'id')
 x_test = pd.get_dummies(x_test)
 x_test['n_jobs'].replace(-1, 16, inplace=True)
 x_test['C'] = x_test.apply(lambda row: row['max_iter'] * row['n_samples']*row['n_features'], axis=1)
@@ -114,7 +114,7 @@ model.fit(xx, y)
 # cv_error = cross_val_score(model,xx,y,cv=2,scoring='neg_mean_squared_error').mean()
 # print(cv_error)
 
-x_test = pd.read_csv('C:/Users/jiang/Downloads/test.csv',index_col = 'id')
+x_test = pd.read_csv('test.csv',index_col = 'id')
 x_test = pd.get_dummies(x_test)
 x_test['n_jobs'].replace(-1,16,inplace=True)
 x_test['C'] = x_test.apply(lambda row: row['max_iter'] * row['n_samples']*row['n_features'], axis=1)
